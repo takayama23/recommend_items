@@ -1,0 +1,1 @@
+truncate table categories1 cascade

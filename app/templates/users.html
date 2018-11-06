@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h3>ユーザー一覧</h3>
+{% if user_list[1] %}
+<table border="1">
+    <tr>
+        {% for column_name in user_list[0] %}
+            <th>{{ column_name }}</th>
+        {% endfor %}
+    </tr>
+    {% for user in user_list[1] %}
+    <tr>
+        <td>　{{ user.no }}　</td>
+        <td>　{{ user.id }}　</td>
+        <td>　<a href="/users/{{ user.id }}" style="text-decoration: none;">{{ user.user_name }}　</a></td>
+        <td>　{{ user.sex }}　</td>
+        <td>　{{ user.age }}　</td>
+        <td>　{{ user.prefecture_name }}　</td>
+        <td>  <input type="button" value="ログイン" onclick="location.href='/login/{{ user.id }}'"></td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<span>現在表示できる情報がありません。</span>
+{% endif %}
+{% endblock %}

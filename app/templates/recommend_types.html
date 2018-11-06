@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h3>レコメンドタイプ一覧</h3>
+{% if recommend_type_list[1] %}
+<table border="1" with="80%">
+    <tr>
+        <th>　{{ recommend_type_list[0][0] }}　</th>
+        <th>　{{ recommend_type_list[0][1] }}　</th>
+        <th>　{{ recommend_type_list[0][2] }}　</th>
+        <th width="200">　{{ recommend_type_list[0][3] }}　</th>
+        <th>　{{ recommend_type_list[0][4] }}　</th>
+        <th>　{{ recommend_type_list[0][5] }}　</th>
+    </tr>
+    {% for recommend_type in recommend_type_list[1] %}
+    <tr>
+        <td>　{{ recommend_type.id }}　</td>
+        <td><div align="center">{{ recommend_type.type_code }}</div></td>
+        <td><div align="center">{% if recommend_type.target == 0 %} ランキング
+            {% elif recommend_type.target == 1 %} 商品 to ユーザー
+            {% else %} 商品 to 商品 {% endif %}
+        </div></td>
+        <td>　{{ recommend_type.recommend_name }}</td>
+        <td>　{{ recommend_type.type_comment }}　</td>
+        <td>　{{ recommend_type.order_number }}　</td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<span>現在表示できる情報がありません。</span>
+{% endif %}
+{% endblock %}

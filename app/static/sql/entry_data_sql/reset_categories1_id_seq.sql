@@ -1,0 +1,1 @@
+select setval ('categories1_id_seq', 1, False)

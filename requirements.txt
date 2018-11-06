@@ -1,0 +1,8 @@
+Flask
+Flask-SQLAlchemy
+Flask-Migrate
+Flask-Login
+Faker
+numpy
+pandas
+psycopg2

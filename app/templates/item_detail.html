@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if item_info[0] %}
+<!-- 商品情報セクション -->
+<h3>商品情報</h3>
+<table border="1">
+    <tr><th width="130">　項目名　</th><th width="320">　内容　</th></tr>
+    <tr><td>　{{ item_info[0][0] }}　</td><td>　{{ item_info[1].item_code }}　</td></tr>
+    <tr><td>　{{ item_info[0][1] }}　</td><td>　{{ item_info[1].item_name }}　</td></tr>
+    <tr><td>　{{ item_info[0][2] }}　</td><td>　{{ item_info[1].item_brand.brand_name }}　</td></tr>
+    <tr><td>　{{ item_info[0][3] }}　</td><td>　{{ item_info[1].item_category1.category1_name }}　</td></tr>
+    <tr><td>　{{ item_info[0][4] }}　</td><td>　{{ item_info[1].item_category2.category2_name }}　</td></tr>
+    <tr><td>　{{ item_info[0][5] }}　</td><td>　{{ item_info[1].item_category3.category3_name }}　</td></tr>
+    <tr><td>　{{ item_info[0][6] }}　</td><td>　{{ item_info[1].price }}円　</td></tr>
+    <tr><td>　{{ item_info[0][7] }}　</td><td>　{{ item_info[2] }}個　</td></tr>
+    <tr><td>　{{ item_info[0][8] }}　</td><td>　{{ item_info[5] }}　</td></tr>
+    <tr><td height="200">　画像　</td><td height="200"><img src="../../../../static/img/{{ item_info[1].file_name }}" /></td></tr>
+</table>
+{% else %}
+<span>現在表示できる情報がありません。</span>
+{% endif %}
+<br>
+<input type="button" value="閲覧" onclick="location.href='/user_action/1/{{ item_info[1].item_code }}'" />
+{% if item_info[3][0] %}
+<input type="button" style="border:outset 2px;" value="いいね！" onclick="location.href='/user_action/-2/{{ item_info[1].item_code }}'" />
+{% else %}
+<input type="button" value="いいね！" onclick="location.href='/user_action/2/{{ item_info[1].item_code }}'" />
+{% endif %}
+<span>　　</span>
+<input type="button" value="カート" onclick="location.href='/user_action/3/{{ item_info[1].item_code }}'" />
+<input type="button" value="購入" onclick="location.href='/user_action/4/{{ item_info[1].item_code }}'" />
+<span>　　</span>
+<input type="button" value="前へ" onclick="location.href='/previous-item/{{ item_info[1].item_code }}'" />
+<input type="button" value="次へ" onclick="location.href='/next-item/{{ item_info[1].item_code }}'" />
+<input type="button" value="戻る" onclick="history.back()" />
+<br><br>
+<form action="/user_action/5/{{ item_info[1].item_code }}" method="post">
+評価：
+    <select name="evaluation">
+    {% for i in range(6) %}
+        {% if i == item_info[4][0] %}
+            <option value="{{ i }}" selected>{{ i }}</option>
+        {% else %}
+            <option value="{{ i }}">{{ i }}</option>
+        {% endif %}
+    {% endfor %}
+    </select>
+    　<input type="submit" value="評価" />
+</form>
+<br>
+<!-- レコメンドセクション（商品 to 商品) -->
+<h3>おすすめ商品情報</h3>
+{% if recommend_info[0] %}
+<form action="/create-recommend-items-to-item/{{ item_info[1].item_code }}" method="post">
+レコメンドタイプ：
+    <select name="recommend_type">
+    {% for recommend_info in recommend_info[0] %}
+        <option value="{{ recommend_info.type_code }}">{{ recommend_info.recommend_name }}</option>
+    {% endfor %}
+    </select>
+    　<input type="submit" value="オススメ!" />
+</form>
+{% endif %}
+<br>
+{% if recommend_info[2][0] %}
+【{{ recommend_info[1].title_message }}】
+<table border="1">
+    <tr>{% for _ in recommend_info[2] %}
+        <td><div align="center">No.{{ loop.index }}</div></td>
+        {% endfor %}
+    </tr>
+    <tr>{%  for recommend_item in recommend_info[2] %}
+    <td>
+        <div align="center">
+            <p><img src="../../../../static/img/{{ recommend_item.file_name }}" width=60% height=60% /></p>
+            <a href="/items/{{ recommend_item.item_code }}" style="text-decoration: none;">
+                <font size="2">{{ recommend_item.item_name }}</font></a>
+        </div>
+    </td>
+        {% endfor %}
+    </tr>
+</table>
+
+{% else %}
+<span>現在表示できる情報がありません。</span>
+{% endif %}
+<br><br>
+{% endblock %}

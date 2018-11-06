@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="uft-8" />
+    <title>レコメンドシステム</title>
+</head>
+<body>
+    <a href="{{ url_for('index_func') }}" style="text-decoration: none;">こけしWEB：　</a>
+    <a href="{{ url_for('items_func')}}" style="text-decoration: none;">商品一覧　</a>
+    <a href="{{ url_for('users_func') }}" style="text-decoration: none;">ユーザー一覧　</a>
+    <a href="{{ url_for('recommend_types_func') }}" style="text-decoration: none;">レコメンド一覧</a>
+    {% if current_user.is_authenticated %}
+        <span style="float: right;">　<input type="button" value="ユーザー変更" onclick="location.href='/change-user'" /></span>
+        <span style="float: right;">　ユーザー{{ current_user.id }}： <a href="/users/{{ current_user.id }}" style="text-decoration: none;">{{ current_user.user_name}}</a></span>
+    {% else %}
+        <span style="float: right;">ログインしていません。</span>
+    {% endif %}
+    <hr>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <span style="color: red;">{{ message }}</span><br>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if user_info[0] %}
+<!-- ユーザー情報セクション -->
+<h3>ユーザー情報</h3>
+<table border="1">
+    <tr><th width="130">　項目名　</th><th width="140">　内容　</th></tr>
+    <tr><td>　{{ user_info[0][0] }}　</td><td>　{{ user_info[1].id }}　</td></tr>
+    <tr><td>　{{ user_info[0][1] }}　</td><td>　{{ user_info[1].user_name }}　</td></tr>
+    <tr><td>　{{ user_info[0][2] }}　</td><td>　{{ user_info[1].user_sex.sex }}　</td></tr>
+    <tr><td>　{{ user_info[0][3] }}　</td><td>　{{ user_info[1].age }}歳　</td></tr>
+    <tr><td>　{{ user_info[0][4] }}　</td><td>　{{ user_info[1].user_prefecture.prefecture_name }}　</td></tr>
+</table>
+{% endif %}
+<br>
+<input type="button" value="前へ" onclick="location.href='/previous-user/{{ user_info[1].id }}'" />
+<input type="button" value="次へ" onclick="location.href='/next-user/{{ user_info[1].id }}'" />
+<span>　</span>
+<input type="button" value="ログイン" onclick="location.href='/login/{{ user_info[1].id }}'">
+<input type="button" value="戻る" onclick="history.back()" />
+<br><br>
+<!-- 購入履歴セクション -->
+<h3>最近の購入（5件まで）</h3>
+{% if user_info[3] %}
+<table border="1">
+    <tr><th>　{{ user_info[2][0] }}　</th>
+        <th>　{{ user_info[2][1] }}　</th>
+        <th width="300">　{{ user_info[2][2] }}　</th>
+        <th>　{{ user_info[2][3] }}　</th>
+        <th>　{{ user_info[2][4] }}　</th>
+        <th>　{{ user_info[2][5] }}　</th>
+    </tr>
+    {% for order_history in user_info[3] %}
+    <tr>
+        <td>　{{ order_history.order_date }}　</td>
+        <td><div align="center">{{ order_history.item_code }}</div></td>
+        <td>　{{ order_history.order_item.item_name }}</td>
+        <td><div align="center">{{ order_history.order_item.price}}円</div></td>
+        <td><div align="center">{{ order_history.orders }}</div></td>
+        <td><div align="center">{{ order_history.price_on_tax }}円</div></td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<span>現在表示できる情報がありません。</span>
+{% endif %}
+<br><br>
+
+<!-- レコメンドセクション（商品 to ユーザー) -->
+<h3>おすすめ商品情報</h3>
+{% if recommend_info[0] %}
+<form action="/create-recommend-items-to-user/{{ user_info[1].id }}" method="post">
+レコメンドタイプ：
+    <select name="recommend_type">
+    {% for recommend_info in recommend_info[0] %}
+        <option value="{{ recommend_info.type_code }}">{{ recommend_info.recommend_name }}</option>
+    {% endfor %}
+    </select>
+    　<input type="submit" value="オススメ!" />
+</form>
+{% endif %}
+<br>
+{% if recommend_info[2] %}
+【{{ user_info[1].user_name }} {{ recommend_info[1].title }}】
+<table border="1">
+    <tr>{% for _ in recommend_info[2] %}
+        <td><div align="center">No.{{ loop.index }}</div></td>
+        {% endfor %}
+    </tr>
+    <tr>{%  for recommend_item in recommend_info[2] %}
+    <td>
+        <div align="center">
+            <p><img src="../../../static/img/{{ recommend_item.file_name }}" width=60% height=60% /></p>
+            <a href="/items/{{ recommend_item.item_code }}" style="text-decoration: none;">
+                <font size="2">{{ recommend_item.item_name }}</font></a>
+        </div>
+    </td>
+        {% endfor %}
+    </tr>
+</table>
+{% else %}
+<span>現在表示できる情報がありません。</span>
+{% endif %}
+<br><br>
+{% endblock %}

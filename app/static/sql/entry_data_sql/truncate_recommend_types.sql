@@ -1,0 +1,1 @@
+truncate table recommend_types cascade

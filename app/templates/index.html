@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- レコメンドセクション（ホームページ用) -->
+<h3>いろいろランキングTOP５</h3>
+{% if recommend_info[0] %}
+<form action="/create-recommend-items-to-home/{{ user_info.id }}" method="post">
+レコメンドタイプ：
+    <select name="recommend_type">
+    {% for recommend_info in recommend_info[0] %}
+        <option value="{{ recommend_info.type_code }}">{{ recommend_info.recommend_name }}</option>
+    {% endfor %}
+    </select>
+    　<input type="submit" value="ランキング" />
+</form>
+{% endif %}
+<br>
+{% if recommend_info[2] %}
+【{{ recommend_info[1].title_message }}】
+<table border="1">
+    <tr>{% for _ in recommend_info[2] %}
+        <td><div align="center">No.{{ loop.index }}</div></td>
+        {% endfor %}
+    </tr>
+    <tr>{%  for recommend_item in recommend_info[2] %}
+    <td>
+        <div align="center">
+            <p><img src="../../../../static/img/{{ recommend_item.file_name }}" width=60% height=60% /></p>
+            <a href="/items/{{ recommend_item.item_code }}" style="text-decoration: none;">
+                <font size="2">{{ recommend_item.item_name }}</font></a>
+        </div>
+    </td>
+        {% endfor %}
+    </tr>
+</table>
+
+{% else %}
+<span>現在表示できる情報がありません。</span>
+{% endif %}
+<br><br>
+{% endblock %}

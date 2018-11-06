@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h3>商品一覧</h3>
+{% if item_list[1] %}
+<table border="1">
+    <tr>
+        {% for column_name in item_list[0] %}
+            <th>{{ column_name }}</th>
+        {% endfor %}
+    </tr>
+    {% for item in item_list[1] %}
+    <tr>
+        <td>　{{ item.no }}　</td>
+        <td>　{{ item.item_code }}　</td>
+        <td>　<a href="/items/{{ item.item_code }}" style="text-decoration: none;">{{ item.item_name }}　</a></td>
+        <td>　{{ item.brand_name }}　</td>
+        <td>　{{ item.price }}円　</td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<span>現在表示できる情報がありません。</span>
+{% endif %}
+{% endblock %}

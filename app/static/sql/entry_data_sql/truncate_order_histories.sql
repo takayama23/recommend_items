@@ -1,0 +1,1 @@
+truncate table order_histories cascade

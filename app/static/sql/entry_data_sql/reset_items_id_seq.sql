@@ -1,0 +1,1 @@
+select setval ('items_id_seq', 1, False)

@@ -1,0 +1,1 @@
+select setval ('recommend_types_id_seq', 1, False)

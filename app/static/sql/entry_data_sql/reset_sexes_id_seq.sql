@@ -1,0 +1,1 @@
+select setval ('sexes_id_seq', 1, False)

@@ -1,0 +1,1 @@
+select setval ('brands_id_seq', 1, False)
